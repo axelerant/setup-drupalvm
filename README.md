@@ -4,6 +4,11 @@ This simple bash script lets you get started with [DrupalVM](https://www.drupalv
 
 ## Usage
 
+Download the script to your working directory or you may place it in your bin directory to run it from anywhere.
+
+    $ wget https://raw.githubusercontent.com/axelerant/setup-drupalvm/master/setup-drupalvm.sh
+    $ chmod +x setup-drupalvm.sh
+
 Run the script directly. You may symlink it to one of the directories in your PATH to run it from anywhere. It always works in the current directory.
 
 **WARNING: This script immediately clears specific DrupalVM related files in your current directory WITHOUT any confirmations. It only checks for filenames like master.zip, Vagrantfile, etc... Please be careful before running the script.**
