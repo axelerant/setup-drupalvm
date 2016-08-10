@@ -6,9 +6,23 @@ rm -rf drupal-vm-master/ provisioning/ default.config.yml Vagrantfile
 
 # Download DrupalVM
 echo "Downloading DrupalVM..."
-wget --quiet https://github.com/geerlingguy/drupal-vm/archive/master.zip
+
+if hash wget 2>/dev/null; then
+  wget --quiet https://github.com/geerlingguy/drupal-vm/archive/master.zip
+elif hash curl 2>/dev/null; then
+  curl -LOs https://github.com/geerlingguy/drupal-vm/archive/master.zip
+else
+  echo "We need either wget or curl to download the zip file. Please install and try again."
+  exit 1
+fi
+
+if ! hash unzip 2>/dev/null; then
+  echo "We need unzip to process the downloaded archive. Please install and try again."
+  exit 2
+fi
+
 unzip -qq master.zip
-rm master.zip
+rm -f master.zip
 
 # Extract and prepare the directory
 echo "Extracting DrupalVM and preparing the directory..."
