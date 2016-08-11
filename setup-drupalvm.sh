@@ -5,10 +5,9 @@ read_prompt() {
     read -e -p "$1: " -i $2 $3
   else
     local response
-    local __resultvar=$3
     read -e -p "$1 ($2): " response
     response="${response:-$2}"
-    eval $__resultvar="'$response'"
+    eval $3="'$response'"
   fi
 }
 
