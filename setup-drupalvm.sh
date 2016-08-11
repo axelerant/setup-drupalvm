@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+read_prompt() {
+  if [[ ${BASH_VERSION:0:1} > 3 ]]; then
+    read -e -p "$1: " -i $2 $3
+  else
+    local response
+    local __resultvar=$3
+    read -e -p "$1 ($2): " response
+    response="${response:-$2}"
+    eval $__resultvar="'$response'"
+  fi
+}
+
 # Clean up files
 rm -f master.zip
 rm -rf drupal-vm-master/ provisioning/ default.config.yml Vagrantfile
@@ -37,13 +49,13 @@ rmdir drupal-vm-master/
 pwd=`pwd`
 default_machine_name=`basename $pwd`
 
-read -e -p "Enter the box: " -i "geerlingguy/ubuntu1604" box
-read -e -p "Enter the machine name: " -i "$default_machine_name" machinename
-read -e -p "Enter the domain name for the host: " -i "$machinename.dev" hostname
-read -e -p "Enter the domain name to access the root: " -i "${machinename}root.dev" roothostname
-read -e -p "Enter the IP: " -i "0.0.0.0" ip
-read -e -p "Enter the relative path to the Drupal installation: " -i "$machinename/docroot" drupalroot
-read -e -p "Enter the PHP version (5.6 or 7.0): " -i "7.0" php_version
+read_prompt "Enter the box" "geerlingguy/ubuntu1604" box
+read_prompt "Enter the machine name" "$default_machine_name" machinename
+read_prompt "Enter the domain name for the host" "$machinename.dev" hostname
+read_prompt "Enter the domain name to access the root" "${machinename}root.dev" roothostname
+read_prompt "Enter the IP" "0.0.0.0" ip
+read_prompt "Enter the relative path to the Drupal installation" "$machinename/docroot" drupalroot
+read_prompt "Enter the PHP version (5.6 or 7.0)" "7.0" php_version
 
 # Generate config.yml
 
