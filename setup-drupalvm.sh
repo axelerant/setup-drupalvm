@@ -134,6 +134,12 @@ installed_extras:
   - xdebug
   # - xhprof
 
+# Remove this section if you want to use MySQL.
+mysql_packages:
+  - mariadb-client
+  - mariadb-server
+  - python-mysqldb
+
 firewall_allowed_tcp_ports:
   - "22"
   - "25"
