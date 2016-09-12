@@ -140,6 +140,8 @@ mysql_packages:
   - mariadb-server
   - python-mysqldb
 
+drush_version: "8.x"
+
 firewall_allowed_tcp_ports:
   - "22"
   - "25"
