@@ -199,7 +199,7 @@ composer_global_packages:
 nodejs_version: "6.x"
 YML
 
-echo <<- MESSAGE
+cat <<- MESSAGE
 
 Generated config.yml.
 Adjust config.yml as per your needs and adapt from default.config.yml. Once
