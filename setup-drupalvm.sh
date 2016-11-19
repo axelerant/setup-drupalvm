@@ -201,6 +201,7 @@ cat >> config.yml <<- YML
 composer_global_packages:
   - { name: hirak/prestissimo, release: '^0.3' }
   - { name: drupal/coder }
+  - { name: davidrjonas/composer-lock-diff, release: '^1.0@dev' }
 
 nodejs_version: "6.x"
 YML
