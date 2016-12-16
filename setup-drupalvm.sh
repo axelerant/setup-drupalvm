@@ -38,7 +38,7 @@ rm -f master.zip
 # Extract and prepare the directory
 echo "Extracting DrupalVM and preparing the directory..."
 cd drupal-vm-master/
-rm -rf .gitignore .travis.yml composer.json LICENSE README.md mkdocs.yml example.drupal.composer.json example.drupal.make.yml docs/ examples/ tests/
+rm -rf .gitignore .travis.yml composer.json LICENSE README.md mkdocs.yml example.drupal.composer.json example.drupal.make.yml .github/ docs/ examples/ tests/
 mv * ..
 cd ..
 rmdir drupal-vm-master/
@@ -54,7 +54,7 @@ read_prompt "Enter the domain name for the host" "$machinename.dev" hostname
 read_prompt "Enter the domain name to access the root" "${machinename}root.dev" roothostname
 read_prompt "Enter the IP" "0.0.0.0" ip
 read_prompt "Enter the relative path to the Drupal installation" "$machinename/docroot" drupalroot
-read_prompt "Enter the PHP version (5.6 or 7.0)" "7.0" php_version
+read_prompt "Enter the PHP version (5.6, 7.0, or 7.1)" "7.1" php_version
 
 # Generate config.yml
 
@@ -120,7 +120,9 @@ installed_extras:
   - adminer
   # - blackfire
   - drupalconsole
+  - drush
   # - elasticsearch
+  # - java
   - mailhog
   # - memcached
   # - newrelic
@@ -130,6 +132,7 @@ installed_extras:
   # - ruby
   # - selenium
   # - solr
+  # - upload-progress
   # - varnish
   - xdebug
   # - xhprof
@@ -159,7 +162,7 @@ firewall_allowed_tcp_ports:
 php_version: "$php_version"
 YML
 
-if [ "$php_version" != "7.0" ]; then
+if [ "$php_version" == "5.6" ]; then
   cat >> config.yml <<- PHPSETTINGS
 php_install_recommends: no
 php_packages:
