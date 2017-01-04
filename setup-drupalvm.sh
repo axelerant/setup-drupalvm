@@ -38,7 +38,7 @@ rm -f master.zip
 # Extract and prepare the directory
 echo "Extracting DrupalVM and preparing the directory..."
 cd drupal-vm-master/
-rm -rf .gitignore .travis.yml composer.json LICENSE README.md mkdocs.yml example.drupal.composer.json example.drupal.make.yml docs/ examples/ tests/
+rm -rf .gitignore .travis.yml composer.json LICENSE README.md mkdocs.yml example.drupal.composer.json example.drupal.make.yml .github/ docs/ examples/ tests/
 mv * ..
 cd ..
 rmdir drupal-vm-master/
@@ -54,7 +54,7 @@ read_prompt "Enter the domain name for the host" "$machinename.dev" hostname
 read_prompt "Enter the domain name to access the root" "${machinename}root.dev" roothostname
 read_prompt "Enter the IP" "0.0.0.0" ip
 read_prompt "Enter the relative path to the Drupal installation" "$machinename/docroot" drupalroot
-read_prompt "Enter the PHP version (5.6 or 7.0)" "7.0" php_version
+read_prompt "Enter the PHP version (5.6, 7.0, or 7.1)" "7.1" php_version
 
 # Generate config.yml
 
@@ -84,35 +84,28 @@ apache_vhosts:
   - servername: "{{ drupal_domain }}"
     serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "$roothostname"
     documentroot: "/var/www"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000/var/www"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "adminer.{{ vagrant_hostname }}"
     documentroot: "{{ adminer_install_dir }}"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ adminer_install_dir }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "xhprof.{{ vagrant_hostname }}"
     documentroot: "{{ php_xhprof_html_dir }}"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ php_xhprof_html_dir }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "pimpmylog.{{ vagrant_hostname }}"
     documentroot: "{{ pimpmylog_install_dir }}"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ pimpmylog_install_dir }}"
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
   - servername: "{{ vagrant_ip }}"
     serveralias: "dashboard.{{ vagrant_hostname }}"
     documentroot: "{{ dashboard_install_dir }}"
-    extra_parameters: |
-          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ dashboard_install_dir }}"
-          DirectoryIndex index.html
+    extra_parameters: "{{ apache_vhost_php_fpm_parameters }}"
 
 # Comment out any extra utilities you don't want to install. If you don't want
 # to install *any* extras, make set this value to an empty set, e.g. '[]'.
@@ -120,7 +113,9 @@ installed_extras:
   - adminer
   # - blackfire
   - drupalconsole
+  - drush
   # - elasticsearch
+  # - java
   - mailhog
   # - memcached
   # - newrelic
@@ -130,6 +125,7 @@ installed_extras:
   # - ruby
   # - selenium
   # - solr
+  # - upload-progress
   # - varnish
   - xdebug
   # - xhprof
@@ -159,7 +155,7 @@ firewall_allowed_tcp_ports:
 php_version: "$php_version"
 YML
 
-if [ "$php_version" != "7.0" ]; then
+if [ "$php_version" == "5.6" ]; then
   cat >> config.yml <<- PHPSETTINGS
 php_install_recommends: no
 php_packages:
