@@ -73,9 +73,9 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
-build_makefile: false
-build_composer: false
-build_composer_project: false
+drupal_build_makefile: false
+drupal_build_composer: false
+drupal_build_composer_project: false
 install_site: false
 
 drupal_core_path: "/var/www/$drupalroot"
@@ -136,7 +136,10 @@ mysql_packages:
   - mariadb-server
   - python-mysqldb
 
-drush_version: "8.x"
+# Uncomment lines below to install drush from source
+# drush_install_from_source: yes
+# drush_version: "8.x"
+# drush_keep_updated: yes
 
 firewall_allowed_tcp_ports:
   - "22"
