@@ -76,7 +76,7 @@ vagrant_synced_folders:
 drupal_build_makefile: false
 drupal_build_composer: false
 drupal_build_composer_project: false
-install_site: false
+drupal_install_site: false
 
 drupal_core_path: "/var/www/$drupalroot"
 
