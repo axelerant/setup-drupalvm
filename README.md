@@ -1,5 +1,7 @@
 # DrupalVM configuration script
 
+**IMPORTANT**: This is now *deprecated* in favour of Lando and other tools. DrupalVM is now only used along with BLT which makes this script unnecessary and not maintained.
+
 This simple bash script lets you get started with [DrupalVM](https://www.drupalvm.com/) quickly for new projects. It downloads DrupalVM in the current directory and sets up a config.yml based on quick questions. The target is to have an opinionated way to run DrupalVM quickly and efficiently.
 
 ## Usage
